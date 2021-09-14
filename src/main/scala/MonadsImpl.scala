@@ -1,3 +1,4 @@
+import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 object MonadsImpl {
@@ -47,6 +48,4 @@ object MonadsImpl {
     number <- numbers
     char <- chars
   } yield (number, char)
-
-
 }
