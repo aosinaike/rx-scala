@@ -31,9 +31,11 @@ libraryDependencies ++= Seq(
   "org.http4s" %% "http4s-blaze-server" % Http4sVersion,
   "org.http4s" %% "http4s-dsl"          % Http4sVersion,
   "org.http4s" %% "http4s-circe"        % Http4sVersion,
-)
 
-//resolvers ++= Seq(
-//  "Spray repository" at "http://repo.spray.io",
-//  "Typesafe repository" at "http://repo.typesafe.com/typesafe/releases/"
-//)
+  "org.tpolecat" %% "doobie-core"      % "1.0.0-RC1",
+  "org.tpolecat" %% "doobie-h2" % "1.0.0-RC1",
+  "org.tpolecat" %% "doobie-postgres" % "1.0.0-RC1",
+  "org.tpolecat" %% "doobie-postgres-circe" % "1.0.0-RC1",
+  "com.github.pureconfig" %% "pureconfig" % "0.16.0"
+
+)
