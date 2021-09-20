@@ -11,16 +11,22 @@ libraryDependencies ++= Seq(
   "dev.zio" %% "zio-test" % "2.0.0-M2" % Test,
   "org.typelevel" %% "cats-core" % "2.6.1",
 
-  "org.postgresql" % "postgresql" % "42.2.23",
-  "com.typesafe.slick" %% "slick" % "3.3.3",
-  "com.typesafe.slick" %% "slick-hikaricp" % "3.3.3",
-  "org.slf4j" % "slf4j-nop" % "1.7.32",
-
-  "net.liftweb" %% "lift-json" % "3.4.3",
-
   "com.typesafe.akka" %% "akka-actor" % "2.6.16",
   "com.typesafe.akka" %% "akka-slf4j" % "2.6.16",
+  "com.typesafe.akka" %% "akka-stream" % "2.6.16",
+  "com.typesafe.akka" %% "akka-testkit" % "2.6.16" % "test",
+  "com.typesafe.akka" %% "akka-http-core"  % "10.2.6",
+  "com.typesafe.akka" %% "akka-http"       % "10.2.6",
+  "com.typesafe.akka" %% "akka-http-spray-json" % "10.2.6",
+  "com.typesafe.akka" %% "akka-http-xml" % "10.2.6",
+
+  "com.typesafe.slick" %% "slick" % "3.3.3",
+  "com.typesafe.slick" %% "slick-hikaricp" % "3.3.3",
+
+  "org.postgresql" % "postgresql" % "42.2.23",
+  "org.slf4j" % "slf4j-nop" % "1.7.32",
   "ch.qos.logback" % "logback-classic" % "1.2.5",
+  "net.liftweb" %% "lift-json" % "3.4.3",
 
   "io.circe" %% "circe-generic" % "0.14.1",
   "io.circe" %% "circe-core" % "0.14.1",
@@ -37,5 +43,7 @@ libraryDependencies ++= Seq(
   "org.tpolecat" %% "doobie-postgres" % "1.0.0-RC1",
   "org.tpolecat" %% "doobie-postgres-circe" % "1.0.0-RC1",
   "com.github.pureconfig" %% "pureconfig" % "0.16.0"
-
 )
+
+//scalacOptions := Seq("-unchecked", "-deprecation")
+scalacOptions += "-deprecation"
