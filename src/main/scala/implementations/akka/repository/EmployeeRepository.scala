@@ -1,5 +1,9 @@
 package implementations.akka.repository
 
+import cats.effect.IO
+import doobie.implicits._
+import doobie.util.transactor.Transactor
+
 import scala.concurrent.Future
 
 object EmployeeRepository {
@@ -8,7 +12,11 @@ object EmployeeRepository {
                       firstName: String,
                       lastName: String,
                       active: Boolean,
-                      address: Address)
+                      address: Address){
+    def parse(): List[String] = List(
+      firstName,
+      lastName)
+  }
 
   case class Address(line1: String,
                      line2: String,
@@ -39,6 +47,13 @@ trait EmployeeRepository {
   import akka.pattern.after
   import scala.concurrent.duration._
   import implementations.akka.repository.RepositoryContext._
+
+  val xa = Transactor.fromDriverManager[IO](
+    "org.postgresql.Driver",     // driver classname
+    "jdbc:postgresql:world",     // connect URL (driver-specific)
+    "postgres",                  // user
+    ""                          // password
+  )
 
   /**
    * Fetch the employee records with a mocked delay to synthesize transaction delays.
@@ -82,5 +97,18 @@ trait EmployeeRepository {
         elem.id == id && elem.firstName == firstName && elem.lastName == lastName
       }
     }
+  }
+
+  def queryEmployeeList(id: String, firstName: String, lastName: String): IO[Seq[Employee]] = {
+    getEmployeeList().map { db =>
+      db.filter { elem =>
+        elem.id == id && elem.firstName == firstName && elem.lastName == lastName
+      }
+    }
+  }
+
+
+  def getEmployeeList(): IO[Seq[Employee]] = {
+    sql"""select * from employee""".query[Employee].stream.compile.toList.transact(xa)
   }
 }

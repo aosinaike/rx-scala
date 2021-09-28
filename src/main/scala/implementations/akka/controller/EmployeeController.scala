@@ -6,11 +6,13 @@ import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport
 import akka.http.scaladsl.model.StatusCodes
 import akka.http.scaladsl.server.Route
 import akka.http.scaladsl.server.Directives._
+import cats.effect.IO
 import implementations.akka.controller.EmployeeController.QueryEmployee
 import implementations.akka.repository.EmployeeRepository
 import implementations.akka.repository.EmployeeRepository.{Address, Employee}
 import spray.json.DefaultJsonProtocol
 
+import scala.concurrent.duration.DurationInt
 import scala.util.{Failure, Success}
 
 object EmployeeController {
@@ -68,7 +70,8 @@ trait EmployeeController
       }
     } ~ post {
       path("query") {
-        entity(as[QueryEmployee]) { q =>
+        entity(as[QueryEmployee]) {
+          q =>
           onComplete(queryEmployee(q.id, q.firstName, q.lastName)) {
             _ match {
               case Success(employees) =>
@@ -79,6 +82,11 @@ trait EmployeeController
                 complete(StatusCodes.InternalServerError, "Failed to query the employees.")
             }
           }
+//
+//          for{
+//            employees <- queryEmployeeList(q.id, q.firstName, q.lastName)
+//            _ <- IO.sleep(2.seconds)
+//          } yield { employees }
         }
       }
     }
